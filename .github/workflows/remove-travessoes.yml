@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   clean-copy:
-    name: Remove long dash characters
+    name: Remove visible dash separators
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,7 +21,7 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Replace long dashes in site files
+      - name: Replace dash separators in site files
         shell: bash
         run: |
           python - <<'PY'
@@ -33,6 +33,19 @@ jobs:
           en_dash = chr(0x2013)
           changed = []
 
+          exact_replacements = {
+              'Todos os exames ocupacionais em um só lugar - é na GNAVIDA': 'Todos os exames ocupacionais em um só lugar. É na GNAVIDA',
+              'Muitas empresas não sabem exatamente o que precisam em Saúde Ocupacional - e isso pode gerar multas, processos e autuações.': 'Muitas empresas não sabem exatamente o que precisam em Saúde Ocupacional, e isso pode gerar multas, processos e autuações.',
+              'GNAVIDA - Gestão de Saúde Ocupacional': 'GNAVIDA Gestão de Saúde Ocupacional',
+              'GNAVIDA - Página inicial': 'GNAVIDA página inicial',
+              'ASO - Atestado de Saúde Ocupacional': 'ASO: Atestado de Saúde Ocupacional',
+              'PCMSO - Programa de Controle Médico de Saúde Ocupacional': 'PCMSO: Programa de Controle Médico de Saúde Ocupacional',
+              'PGR - Programa de Gerenciamento de Riscos': 'PGR: Programa de Gerenciamento de Riscos',
+              'Avenida Eixo Urbano Central, 797 - Centro, Camaçari, BA': 'Avenida Eixo Urbano Central, 797, Centro, Camaçari, BA',
+              'WhatsApp: 71 98522-4584': 'WhatsApp: 71 98522 4584',
+              '71 98522-4584': '71 98522 4584',
+          }
+
           for path in Path('.').rglob('*'):
               if not path.is_file():
                   continue
@@ -43,18 +56,27 @@ jobs:
               if path.suffix not in extensions:
                   continue
 
-              text = path.read_text(encoding='utf-8')
-              updated = text.replace(f' {em_dash} ', ' - ').replace(em_dash, '-')
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+
+              updated = text.replace(f' {em_dash} ', ' ').replace(em_dash, '')
               updated = updated.replace(f' {en_dash} ', ' a ').replace(en_dash, ' a ')
+
+              for before, after in exact_replacements.items():
+                  updated = updated.replace(before, after)
+
+              updated = updated.replace(' - ', ' ')
 
               if updated != text:
                   path.write_text(updated, encoding='utf-8')
                   changed.append(str(path))
 
-          print('\n'.join(changed) if changed else 'No long dashes found.')
+          print('\n'.join(changed) if changed else 'No visible dash separators found.')
           PY
 
-      - name: Validate no long dashes remain
+      - name: Validate visible dash separators are gone
         shell: bash
         run: |
           python - <<'PY'
@@ -77,7 +99,7 @@ jobs:
                   text = path.read_text(encoding='utf-8')
               except UnicodeDecodeError:
                   continue
-              if em_dash in text or en_dash in text:
+              if em_dash in text or en_dash in text or ' - ' in text:
                   hits.append(str(path))
 
           if hits:
@@ -95,5 +117,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Remove long dashes from site copy"
+          git commit -m "Remove visible dash separators from site copy"
           git push
