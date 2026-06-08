@@ -29,10 +29,14 @@ jobs:
 
           extensions = {'.html', '.css', '.js', '.md', '.ts', '.tsx', '.json', '.xml', '.txt'}
           skip_dirs = {'.git', 'node_modules', '.next'}
+          em_dash = chr(0x2014)
+          en_dash = chr(0x2013)
           changed = []
 
           for path in Path('.').rglob('*'):
               if not path.is_file():
+                  continue
+              if path.as_posix() == '.github/workflows/remove-travessoes.yml':
                   continue
               if any(part in skip_dirs for part in path.parts):
                   continue
@@ -40,8 +44,8 @@ jobs:
                   continue
 
               text = path.read_text(encoding='utf-8')
-              updated = text.replace(' — ', ' - ').replace('—', '-')
-              updated = updated.replace(' – ', ' a ').replace('–', ' a ')
+              updated = text.replace(f' {em_dash} ', ' - ').replace(em_dash, '-')
+              updated = updated.replace(f' {en_dash} ', ' a ').replace(en_dash, ' a ')
 
               if updated != text:
                   path.write_text(updated, encoding='utf-8')
@@ -53,10 +57,33 @@ jobs:
       - name: Validate no long dashes remain
         shell: bash
         run: |
-          if git grep -n $'[—–]' -- . ':!node_modules' ':!.next'; then
-            echo "Long dash characters still found."
-            exit 1
-          fi
+          python - <<'PY'
+          from pathlib import Path
+
+          em_dash = chr(0x2014)
+          en_dash = chr(0x2013)
+          skip_dirs = {'.git', 'node_modules', '.next'}
+          allowed = {'.github/workflows/remove-travessoes.yml'}
+          hits = []
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file():
+                  continue
+              if path.as_posix() in allowed:
+                  continue
+              if any(part in skip_dirs for part in path.parts):
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              if em_dash in text or en_dash in text:
+                  hits.append(str(path))
+
+          if hits:
+              print('\n'.join(hits))
+              raise SystemExit(1)
+          PY
 
       - name: Commit cleaned copy
         shell: bash
