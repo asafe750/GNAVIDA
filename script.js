@@ -1,5 +1,5 @@
 const WHATSAPP_NUMBER = "5571985224584";
-const WHATSAPP_DISPLAY = "71 98522-4584";
+const WHATSAPP_DISPLAY = "71 98522 4584";
 
 const iconSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const phoneSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.92v2.1a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 3.3 2 2 0 0 1 4.11 1.1h2.1a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.8a2 2 0 0 1-.45 2.11L7.55 8.6a16 16 0 0 0 7.85 7.85l.87-.87a2 2 0 0 1 2.11-.45c.9.31 1.84.53 2.8.66A2 2 0 0 1 22 16.92Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
