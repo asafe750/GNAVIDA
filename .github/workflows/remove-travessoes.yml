@@ -1,0 +1,72 @@
+name: Remove Travessoes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/remove-travessoes.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean-copy:
+    name: Remove long dash characters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Replace long dashes in site files
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          extensions = {'.html', '.css', '.js', '.md', '.ts', '.tsx', '.json', '.xml', '.txt'}
+          skip_dirs = {'.git', 'node_modules', '.next'}
+          changed = []
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file():
+                  continue
+              if any(part in skip_dirs for part in path.parts):
+                  continue
+              if path.suffix not in extensions:
+                  continue
+
+              text = path.read_text(encoding='utf-8')
+              updated = text.replace(' — ', ' - ').replace('—', '-')
+              updated = updated.replace(' – ', ' a ').replace('–', ' a ')
+
+              if updated != text:
+                  path.write_text(updated, encoding='utf-8')
+                  changed.append(str(path))
+
+          print('\n'.join(changed) if changed else 'No long dashes found.')
+          PY
+
+      - name: Validate no long dashes remain
+        shell: bash
+        run: |
+          if git grep -n $'[—–]' -- . ':!node_modules' ':!.next'; then
+            echo "Long dash characters still found."
+            exit 1
+          fi
+
+      - name: Commit cleaned copy
+        shell: bash
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Remove long dashes from site copy"
+          git push
