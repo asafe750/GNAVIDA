@@ -1,0 +1,68 @@
+name: Fix Home Workflow Indent
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/fix-home-workflow-indent.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    name: Fix apply workflow indentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Indent embedded Base64 block
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/workflows/apply-home-fixes.yml")
+          lines = path.read_text(encoding="utf-8").splitlines()
+          start_marker = "          cat > /tmp/home-fixes.tgz.b64 <<'HOME_FIXES_B64'"
+          end_marker = "HOME_FIXES_B64"
+          indent = "          "
+          output = []
+          in_block = False
+
+          for line in lines:
+              if in_block:
+                  stripped = line.strip()
+                  if stripped == end_marker:
+                      output.append(indent + end_marker)
+                      in_block = False
+                  elif line.startswith(indent):
+                      output.append(line)
+                  else:
+                      output.append(indent + line)
+                  continue
+
+              output.append(line)
+              if line == start_marker:
+                  in_block = True
+
+          path.write_text("\n".join(output) + "\n", encoding="utf-8")
+          PY
+
+      - name: Commit indentation fix
+        shell: bash
+        run: |
+          git add .github/workflows/apply-home-fixes.yml
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Fix embedded home fixes workflow indentation"
+          git push
