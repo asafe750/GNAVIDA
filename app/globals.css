@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-navy: #0A1B4B;
+  --color-navy-mid: #112266;
+  --color-green: #6AC430;
+  --color-white: #FFFFFF;
+  --color-gray-light: #F4F6FA;
+  --color-gray-text: #4A5568;
+  --color-navy-rgb: 10 27 75;
+  --color-navy-mid-rgb: 17 34 102;
+  --color-green-rgb: 106 196 48;
+  --color-white-rgb: 255 255 255;
+  --color-gray-light-rgb: 244 246 250;
+  --color-gray-text-rgb: 74 85 104;
+  --container-padding-mobile: 24px;
+  --container-padding-desktop: 80px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-gray-text);
+  background: var(--color-white);
+  font-family: var(--font-montserrat), Montserrat, sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-feature-settings: "kern";
+}
+
+a {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+::selection {
+  color: var(--color-navy);
+  background: var(--color-green);
+}
+
+@layer base {
+  h1 {
+    font-size: clamp(2.75rem, 8vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  h3 {
+    font-size: clamp(1.35rem, 2.6vw, 2.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  p {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+  }
+}
+
+@layer utilities {
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .photo-overlay-navy {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .photo-overlay-navy::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--color-navy);
+    opacity: 0.8;
+    pointer-events: none;
+  }
+}
