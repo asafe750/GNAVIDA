@@ -62,7 +62,7 @@ export function Hero() {
         <article className="lg:col-span-7">
           <Badge>Saúde Ocupacional Completa em Camaçari</Badge>
           <h1 className="mt-6 max-w-5xl text-[clamp(3.25rem,7vw,4.5rem)] text-white">
-            Saúde Ocupacional em Camaçari com estrutura própria: exames, PGR, PCMSO e NR-1 em um só lugar
+            Saúde Ocupacional em Camaçari com Estrutura Própria. Exames, PGR, PCMSO e NR-1 em um só lugar.
           </h1>
           <p className="mt-6 max-w-3xl text-xl font-medium text-white/80">
             A GNAVIDA atende empresas de 1 a 300+ funcionários com exames ocupacionais, documentação SST completa e adequação à nova NR-1. ASO em até 48h, sem intermediários.

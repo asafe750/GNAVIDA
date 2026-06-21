@@ -43,6 +43,29 @@ export const NAV_LINKS = [
 
 export const CLIENTS = ["Braskem", "White Martins", "Knauf", "Deten"] as const;
 
+export const CLIENT_SECTORS = [
+  {
+    name: "Braskem",
+    image: "/images/setores/petroquimica.jpg",
+    alt: "Atendimento em saúde ocupacional para indústria petroquímica em Camaçari",
+  },
+  {
+    name: "White Martins",
+    image: "/images/setores/gases-industriais.jpg",
+    alt: "Atendimento em saúde ocupacional para empresa de gases industriais em Camaçari",
+  },
+  {
+    name: "Knauf",
+    image: "/images/setores/construcao.jpg",
+    alt: "Atendimento em saúde ocupacional para construção e indústria em Camaçari",
+  },
+  {
+    name: "Deten",
+    image: "/images/setores/industria-geral.jpg",
+    alt: "Atendimento em saúde ocupacional para indústria geral em Camaçari",
+  },
+] as const;
+
 export const TRUST_METRICS = [
   { value: "48h", label: "Entrega do ASO" },
   { value: "100%", label: "Digital e integrado ao eSocial" },
@@ -148,10 +171,10 @@ export const IN_LOCO_STATS = [
 ] as const;
 
 export const NR1_CHECKLIST = [
-  "Medição de Risco Psicossocial",
-  "Atualização do PGR conforme NR-1",
-  "Treinamentos obrigatórios documentados",
-  "Envio automático ao eSocial",
+  "Medição de Risco Psicossocial (NR-1)",
+  "Atualização do PGR",
+  "Atualização do PCMSO",
+  "Envio do eSocial",
 ] as const;
 
 export const CONTACT_EMPLOYEE_OPTIONS = [

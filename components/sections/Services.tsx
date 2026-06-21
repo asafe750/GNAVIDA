@@ -30,7 +30,7 @@ const serviceIcons: Record<ServiceIconName, LucideIcon> = {
 
 export function Services() {
   return (
-    <SectionWrapper background="white" id="servicos">
+    <SectionWrapper background="gray" id="servicos">
       <header className="mx-auto max-w-4xl text-center">
         <h2>Serviços de Saúde Ocupacional em Camaçari</h2>
       </header>
@@ -42,14 +42,20 @@ export function Services() {
           return (
             <article
               key={service.title}
-              className="relative rounded-2xl border border-gray-100 bg-white p-7 shadow-navy-md transition duration-300 hover:-translate-y-1 hover:border-green"
+              className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-7 shadow-navy-md transition duration-200 hover:-translate-y-1 hover:border-green"
             >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute right-0 top-0 h-32 w-32 bg-gradient-to-bl from-navy/5 to-transparent"
+              />
               {"badge" in service ? (
-                <Badge className="absolute right-5 top-5">{service.badge}</Badge>
+                <Badge className="absolute right-5 top-5 z-10">{service.badge}</Badge>
               ) : null}
-              <Icon aria-hidden="true" className="text-green" size={34} />
-              <h3 className="mt-8 pr-10 text-navy">{service.title}</h3>
-              <p className="mt-5 font-medium text-gray-text">{service.description}</p>
+              <span className="relative z-10 inline-flex rounded-full border border-navy/10 bg-navy/10 p-3 text-green transition duration-200 group-hover:bg-green/20">
+                <Icon aria-hidden="true" size={32} />
+              </span>
+              <h3 className="relative z-10 mt-8 pr-10 text-navy">{service.title}</h3>
+              <p className="relative z-10 mt-5 font-medium text-gray-text">{service.description}</p>
             </article>
           );
         })}

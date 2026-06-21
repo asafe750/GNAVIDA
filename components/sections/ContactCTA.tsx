@@ -45,8 +45,13 @@ export function ContactCTA() {
   }
 
   return (
-    <SectionWrapper background="navy" id="contato">
-      <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+    <SectionWrapper background="navy" className="relative overflow-hidden" id="contato">
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 bg-[url('/images/equipe-atendimento.jpg')] bg-cover bg-center"
+      />
+      <span aria-hidden="true" className="absolute inset-0 bg-navy/85" />
+      <div className="relative z-10 grid gap-10 lg:grid-cols-12 lg:items-start">
         <article className="lg:col-span-5">
           <h2 className="text-white">Solicite um Orçamento Gratuito</h2>
           <p className="mt-6 text-lg font-medium text-white/70">

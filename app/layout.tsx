@@ -164,7 +164,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         />
         <Navbar />
         {children}
-        <footer className="bg-navy px-6 py-12 text-white md:px-20">
+        <footer className="bg-navy-mid px-6 py-12 text-white md:px-20">
           <div className="mx-auto grid max-w-content gap-8 md:grid-cols-3">
             <section aria-labelledby="footer-name">
               <h2 id="footer-name" className="text-xl font-black uppercase">

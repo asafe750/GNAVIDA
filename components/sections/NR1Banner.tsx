@@ -19,7 +19,7 @@ export function NR1Banner() {
         </article>
 
         <aside className="rounded-2xl bg-navy p-8 shadow-navy-lg lg:col-span-5">
-          <h3 className="text-2xl text-white">GNAVIDA resolve para você</h3>
+          <h3 className="text-2xl text-white">A GNAVIDA já tem a solução</h3>
           <ul className="mt-6 space-y-4">
             {NR1_CHECKLIST.map((item) => (
               <li key={item} className="flex items-start gap-3 text-white">
